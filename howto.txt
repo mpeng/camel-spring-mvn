@@ -1,3 +1,7 @@
-1. mvn clean install
-2. mvn spring-boot:run 
-
+1. C:\Work\camel-spring-mvn>mvn clean install
+2. C:\Work\camel-spring-mvn>mvn spring-boot:run 
+3. C:\Work\camel-spring-mvn>mvn camel:run -Dexec.cleanupDaemonThreads=false 
+4. C:\Work\camel-spring-mvn>mvn compile exec:java -Dexec:mainClass="com.example.demo.DemoApplication" -Dexec.cleanupDaemonThreads=false
+5. C:\Work\camel-spring-mvn>mvn test 
+6. C:\Work\camel-spring-mvn>mvn test -Dtest=SimpleMockTest test
+7. C:\Work\camel-spring-mvn>mvn test -Dtest=SimpleMockTest#testMock test
