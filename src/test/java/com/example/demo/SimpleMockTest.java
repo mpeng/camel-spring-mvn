@@ -6,6 +6,8 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit5.CamelTestSupport;
 import org.junit.jupiter.api.Test;
+import com.example.demo.bean.MessageTranslatorBean;
+
 
 public class SimpleMockTest extends CamelTestSupport {
 
@@ -13,9 +15,22 @@ public class SimpleMockTest extends CamelTestSupport {
 
   @Test
   public void testMock() throws Exception {
-    getMockEndpoint("mock:ABC").expectedBodiesReceived(PREFIX + "Hello World");
 
-    template.sendBody("direct:start1", "Hello World");
+    System.out.println( "============Camel Context=========" );
+    System.out.println( context );
+    System.out.println( context() );
+    System.out.println( context == context() );
+    context.getEndpoints().stream().map( e -> e.getEndpointUri()).forEach(System.out::println);
+
+    getMockEndpoint("mock:Michael").expectedBodiesReceived(PREFIX + "Hello World");
+    getMockEndpoint("mock:Christie").expectedBodiesReceived(PREFIX + "Hello World");
+    getMockEndpoint("mock:Richard").expectedBodiesReceived(PREFIX + "Hello World");
+    getMockEndpoint("mock:Charlie").expectedBodiesReceived(PREFIX + "Hello World");
+
+    template.sendBody("direct:Michael", "Hello World");
+    template.sendBody("direct:Christie", "Hello World");
+    template.sendBody("direct:Richard", "Hello World");
+    template.sendBody("direct:Charlie", "Hello World");
 
     MockEndpoint.assertIsSatisfied(context);
   }
@@ -25,10 +40,40 @@ public class SimpleMockTest extends CamelTestSupport {
     return new RouteBuilder() {
       @Override
       public void configure() {
-        from("direct:start1")
+        from("direct:Michael")
+          .id("Michael")
           .bean(MyMessageTranslator.class, "translateMessage")
-          .log( "---Hello You---")
-          .to("mock:ABC");
+          .log( "---Hello Michael---")
+          .to("mock:Michael");
+
+        from("direct:Christie")
+          .id("Christie")
+          .bean(MessageTranslatorBean.class, "translateMessage")
+          .log( "---Hello Christie---")
+          .to("mock:Christie");
+
+        from("direct:Richard")
+          .id("Richard")
+          .bean(MessageTranslatorBean.class, "translateMessage")
+          .log( "---Hello Richard---")
+          .to("mock:Richard");
+
+        from("direct:Charlie")
+          .id("Charlie")
+          .bean(MyMessageTranslator.class, "translateMessage")
+          .log( "---Hello Charlie---")
+          .to("mock:Charlie");
+
+        from("timer:foo?period=2000")
+          .id("Kevin")
+          .transform().simple("${random(20)}")
+          .choice()
+          .when().simple("${body} > 10")
+          .log("high ${body}")
+          .when().simple("${body} > 5")
+          .log("med ${body}")
+          .otherwise()
+          .log("low ${body}");
       }
     };
   }
