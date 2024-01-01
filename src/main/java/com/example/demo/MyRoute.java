@@ -37,6 +37,27 @@ public class MyRoute extends RouteBuilder {
           .log("low ${body}");
 
 
+        from("timer:foo?period={{myPeriod}}")
+          .id("Justin")
+          .setHeader("foo", constant("bar"))
+          .transform().simple("{'header': { 'foo': 'bar' }}}")
+          .choice()
+          .when(simple("${header.foo} == 'bar1'"))
+          .log("Header value is bar. It is ${header.foo}")
+          .to("direct:b")
+          .otherwise()
+          .log("Header value is not bar. It is ${header.foo}")
+          .log("-------${body}------------")
+          .log("-------${header.foo}------------!!!")  //ToDo
+          .to("direct:c");
+
+        from( "direct:b")
+          .log( "Bar: ${body}");
+        from( "direct:c")
+          .log( "Non Bar: ${body}");
+
+
+
         from("timer:hello?period=1000")
           .transform(simple("Random number ${random(0,100)}"))
           .to("spring-rabbitmq:foo?routingKey=mykey");
@@ -47,6 +68,8 @@ public class MyRoute extends RouteBuilder {
 
         from("spring-rabbitmq:foo?queues=myqueue&routingKey=mykey")
           .log("From RabbitMQ: ${body}");
+
+
     }
 }
 

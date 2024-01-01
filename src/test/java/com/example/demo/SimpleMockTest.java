@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import org.apache.camel.Body;
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.RoutesBuilder;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
@@ -31,6 +32,16 @@ public class SimpleMockTest extends CamelTestSupport {
     template.sendBody("direct:Christie", "Hello World");
     template.sendBody("direct:Richard", "Hello World");
     template.sendBody("direct:Charlie", "Hello World");
+
+
+    System.out.println( "-------Begin Body-------------" );
+    template.sendBody("direct:Json", "Huge Body");
+    System.out.println( "---------End Body-----------" );
+
+    System.out.println( "-------Begin Header-------------" );
+    template.sendBodyAndHeader("direct:Json", "Big Body", "foo", "bar");
+    System.out.println( "---------End Header-----------" );
+
 
     MockEndpoint.assertIsSatisfied(context);
   }
@@ -63,6 +74,21 @@ public class SimpleMockTest extends CamelTestSupport {
           .bean(MyMessageTranslator.class, "translateMessage")
           .log( "---Hello Charlie---")
           .to("mock:Charlie");
+
+
+        from("direct:Json")
+          .id("Json")
+          .log( "---Hello Json---")
+          .log( "---${body}--${header.foo}---")
+          .choice()
+          .when().simple("${header.foo} == 'bar'")
+          .log( "The header value is bar" )
+          .log(LoggingLevel.INFO, "test", "${body} and --${header.foo}")
+          .to("mock:Json")
+          .otherwise()
+          .log("The header value is NOT bar")
+          .log(LoggingLevel.INFO, "test", "${body} and --${header.foo}")
+          .to("mock:Json");
 
         from("timer:foo?period=2000")
           .id("Kevin")
