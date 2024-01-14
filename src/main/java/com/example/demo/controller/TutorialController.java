@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Tutorial;
 import com.example.demo.repository.TutorialRepository;
+import org.springframework.web.server.ResponseStatusException;
 
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api")
 public class TutorialController {
@@ -56,7 +58,20 @@ public class TutorialController {
     if (tutorialData.isPresent()) {
       return new ResponseEntity<>(tutorialData.get(), HttpStatus.OK);
     } else {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      System.out.println(String.format("Tutorial with id [%s] not found.", id ));
+      return new ResponseEntity<>(new Tutorial(), HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @GetMapping("/tutorial/{id}")
+  public @ResponseBody Tutorial getTutorialByID(@PathVariable("id") long id) {
+    Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
+
+    if (tutorialData.isPresent()) {
+      return tutorialData.get();
+    } else {
+      System.out.println(String.format("Tutorial with id [%s] not found..", id ));
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
   }
 

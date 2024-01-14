@@ -9,6 +9,9 @@ public class MyRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
+
+        if ( true ) return;
+
         from("timer:foo")
           .id("Steve")
           .to("log:bar");
@@ -93,9 +96,7 @@ public class MyRoute extends RouteBuilder {
           //.to("log:slow?level=OFF");
 
         from("spring-rabbitmq:foo?queues=myqueue&routingKey=mykey")
-          .log("");
-          //.log("======From RabbitMQ: ${body}======");
-
+          .log("======From RabbitMQ: ${body}======");
 
         /*
         from("timer:hello?period=1000")

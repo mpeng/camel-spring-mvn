@@ -8,4 +8,16 @@
 
 To use PostgreSQL DB:
 
-http://localhost:8080/api/tutorials
+GET  http://localhost:8080/api/tutorials
+GET  http://localhost:8080/api/tutorials/1
+GET  http://localhost:8080/api/tutorials/published
+POST http://localhost:8080/api/tutorials
+PUT  http://localhost:8080/api/tutorials/2
+DELETE  http://localhost:8080/api/tutorials/3
+
+{
+    "id": 1,
+    "title": "How to use postgreSQL",
+    "description": "How to use postgreSQL in two days",
+    "published": false
+}
