@@ -93,7 +93,8 @@ public class MyRoute extends RouteBuilder {
           //.to("log:slow?level=OFF");
 
         from("spring-rabbitmq:foo?queues=myqueue&routingKey=mykey")
-          .log("======From RabbitMQ: ${body}======");
+          .log("");
+          //.log("======From RabbitMQ: ${body}======");
 
 
         /*

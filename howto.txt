@@ -5,3 +5,7 @@
 5. C:\Work\camel-spring-mvn>mvn test 
 6. C:\Work\camel-spring-mvn>mvn test -Dtest=SimpleMockTest test
 7. C:\Work\camel-spring-mvn>mvn test -Dtest=SimpleMockTest#testMock test
+
+To use PostgreSQL DB:
+
+http://localhost:8080/api/tutorials
