@@ -42,6 +42,10 @@ public class SimpleMockTest extends CamelTestSupport {
     template.sendBodyAndHeader("direct:Json", "Big Body", "foo", "bar");
     System.out.println( "---------End Header-----------" );
 
+    System.out.println( "-------Begin wireTap-------------" );
+    template.sendBody("direct:start", "WireTap");
+    System.out.println( "---------End wireTap-----------" );
+
 
     MockEndpoint.assertIsSatisfied(context);
   }
@@ -100,6 +104,23 @@ public class SimpleMockTest extends CamelTestSupport {
           .log("med ${body}")
           .otherwise()
           .log("low ${body}");
+
+        from("direct:start")
+          .id( "Original Route" )
+          .transform().simple("Original Message")
+          .log( "1=============${body}=============")
+          .to("log:foo")
+          .wireTap("direct:tap")
+          .id( "Tapped Route" )
+          .log( "2=============${body}=============")
+          .to("log:result");
+
+        from("direct:tap")
+          .id( "WireTap Route" )
+          //.delay(1000).setBody().constant("Tapped Message")
+          .delay(1000)
+          .log( "${body} 1")
+          .to("log:tap");
       }
     };
   }
