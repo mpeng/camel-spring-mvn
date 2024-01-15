@@ -32,7 +32,7 @@ public class PostgresController {
   @ResponseStatus(HttpStatus.OK)
   public @ResponseBody String postgres() {
 
-    String response = "OK";
+    String response = "";
 
       try {
         // Load the PostgreSQL JDBC driver
@@ -47,37 +47,25 @@ public class PostgresController {
             String query = "SELECT * FROM coordiantes";
 
             // Prepare and execute the query
-            System.out.println( "Here1" );
             try (PreparedStatement preparedStatement = connection.prepareStatement(query);
                  ResultSet resultSet = preparedStatement.executeQuery()) {
 
-              System.out.println( "Here2" );
-
               // Process the result set
               while (resultSet.next()) {
-                System.out.println( "Here3" );
                 int id = resultSet.getInt("id");
-                System.out.println( "Here4" );
                 Object x = resultSet.getObject("location");
-                System.out.println( "Here5" );
                 Object y = resultSet.getObject("location");
-                System.out.println( "Here6" );
-
-                response = String.format( "ID: %d, X: %s, Y: %s", id, x, y );
-                System.out.println( "Here7" );
+                response += String.format( "[ID: %d, X: %s, Y: %s]\n", id, x, y );
                 System.out.println( response );
-                System.out.println( "Here8" );
               }
             }
           } else {
-            System.out.println( "Here9" );
             System.out.println("Failed to connect to the PostgreSQL server.");
           }
         }
-        System.out.println( "Here10" );
         return response;
       } catch (ClassNotFoundException | SQLException e) {
-        System.out.println( "Here11: " + e );
+        System.out.println( "Here: " + e );
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
       }
   }
