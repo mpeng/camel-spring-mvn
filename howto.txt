@@ -1,3 +1,8 @@
+To use PostgreSQL DB:
+Make sure PorgresSQL is started first:
+
+C:\teos\pgsql\bin>postgres -D  C:\teos\pgsql\data
+
 1. C:\Work\camel-spring-mvn>mvn clean install
 2. C:\Work\camel-spring-mvn>mvn spring-boot:run - Best
 3. C:\Work\camel-spring-mvn>mvn camel:run -Dexec.cleanupDaemonThreads=false 
@@ -6,7 +11,9 @@
 6. C:\Work\camel-spring-mvn>mvn test -Dtest=SimpleMockTest test
 7. C:\Work\camel-spring-mvn>mvn test -Dtest=SimpleMockTest#testMock test
 
-To use PostgreSQL DB:
+
+GET  http://localhost:8091/api/health
+GET  http://localhost:8080/api/health
 GET  http://localhost:8080/api/tutorials
 GET  http://localhost:8080/api/tutorials/1
 GET  http://localhost:8080/api/tutorials/published
@@ -23,3 +30,6 @@ DELETE  http://localhost:8080/api/tutorials/3
 
 To use PostgreSQL's TYPE feature:
 http://localhost:8080/api2/postgres
+
+http://localhost:8082/api/api-docs
+http://localhost:8082/api/users/health
