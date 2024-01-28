@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import static org.apache.camel.model.rest.RestParamType.body;
 import static org.apache.camel.model.rest.RestParamType.path;
 
+import com.example.demo.bean.*;
+
 @Component
 public class HealthRoute
   extends RouteBuilder {
@@ -57,9 +59,6 @@ public class HealthRoute
           .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(204))
           .setBody(constant(""));
 
-        //rest("/api3").get("/health").produces("application/json").to("direct:healthCheckEndpoint");
-
-
         rest("/users").description("User REST service")
           .get("/health")
           .consumes("application/json")
@@ -68,10 +67,9 @@ public class HealthRoute
 
         from("direct:healthCheckEndpoint").routeId("health-check-events")
           .log("!!!!!!!!!!!!!!!!!!!!!")
-          .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200))
-          .setBody(constant("{'Message': 'Hello world'}"));
-          //.log("!!!!!!!!!!!!!!!!!!!!!")
-          //.bean(HealthBean.class);
+          //.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200))
+          //.setBody(constant("{'Message': 'Hello world'}"));
+          .bean(HealthBean.class);
 
     }
 }

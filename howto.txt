@@ -32,6 +32,6 @@ http://localhost:8080/api2/postgres
 
 Endpoints for Camel Rest DSL
 ============================
-http://localhost:8082/api/api-docs
 http://localhost:8082/api/users
 http://localhost:8082/api/users/health
+http://localhost:8082/api/api-docs

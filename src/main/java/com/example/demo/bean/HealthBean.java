@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 public class HealthBean {
 
     public void process(Exchange exchange) {
-        exchange.getIn().setBody("");
+        exchange.getIn().setBody("{'Message': 'I am healthy'}");
     }
 
 }
