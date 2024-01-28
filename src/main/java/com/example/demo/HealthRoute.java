@@ -11,33 +11,14 @@ import org.springframework.stereotype.Component;
 import static org.apache.camel.model.rest.RestParamType.body;
 import static org.apache.camel.model.rest.RestParamType.path;
 
-/**
- * A simple Camel REST DSL route with OpenApi API documentation.
- */
-
-
-//@ApplicationScoped
 @Component
 public class HealthRoute
   extends RouteBuilder {
 
-    //@Inject
-    //@Uri("direct:healthCheckEndpoint")
-    //Endpoint healthCheckEndpoint;
     private String contextPath = "";
 
     @Override
     public void configure() throws Exception {
-
-        /*
-        restConfiguration()
-          .component("undertow").contextPath("/")
-          .bindingMode(RestBindingMode.json)
-          .apiContextPath("/api-docs")
-          .enableCORS(true).apiVendorExtension(true)
-          .apiProperty("base.path", "/icms")
-          .apiProperty("api.title", "ICMS REST API");
-         */
 
         restConfiguration()
           .component("undertow")
@@ -50,7 +31,7 @@ public class HealthRoute
           .apiProperty("api.title", "User API")
           .apiProperty("api.version", "1.0.0");
 
-        /*
+
         rest("/users").description("User REST service")
           .consumes("application/json")
           .produces("application/json")
@@ -75,18 +56,10 @@ public class HealthRoute
           .to("bean:userService?method=updateUser")
           .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(204))
           .setBody(constant(""));
-        */
+
         //rest("/api3").get("/health").produces("application/json").to("direct:healthCheckEndpoint");
 
-        rest("/users").description("User REST service")
-          .produces("application/json")
-          .get().description("Find all users").outType(User[].class)
-          .responseMessage().code(200).message("All users successfully returned").endResponseMessage()
-          .to("bean:userService?method=findUsers");
 
-
-
-        /*
         rest("/users").description("User REST service")
           .get("/health")
           .consumes("application/json")
@@ -95,11 +68,11 @@ public class HealthRoute
 
         from("direct:healthCheckEndpoint").routeId("health-check-events")
           .log("!!!!!!!!!!!!!!!!!!!!!")
-          .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
-          //.setBody(constant("{'Message': 'Hello world'}"));
+          .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200))
+          .setBody(constant("{'Message': 'Hello world'}"));
           //.log("!!!!!!!!!!!!!!!!!!!!!")
           //.bean(HealthBean.class);
-        */
+
     }
 }
 
