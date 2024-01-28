@@ -22,6 +22,7 @@ public class HealthRoute
     @Override
     public void configure() throws Exception {
 
+        /*
         restConfiguration()
           .component("undertow")
           .bindingMode(RestBindingMode.json) // auto: No type converter // off: No type converter // json: ?? // json_xml: XML DataFormat jaxb not found
@@ -32,8 +33,7 @@ public class HealthRoute
           .apiContextPath("/api-doc")
           .apiProperty("api.title", "User API")
           .apiProperty("api.version", "1.0.0");
-
-
+        */
         rest("/users").description("User REST service")
           .consumes("application/json")
           .produces("application/json")
