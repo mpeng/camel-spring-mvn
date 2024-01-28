@@ -59,13 +59,13 @@ public class HealthRoute
           .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(204))
           .setBody(constant(""));
 
-        rest("/users").description("User REST service")
+        rest("/service").description("User REST service")
           .get("/health")
           .consumes("application/json")
           .produces("application/json")
-          .to("direct:healthCheckEndpoint");
+          .to("direct:servicehealthCheck");
 
-        from("direct:healthCheckEndpoint").routeId("health-check-events")
+        from("direct:servicehealthCheck").routeId("service-health-check")
           .log("!!!!!!!!!!!!!!!!!!!!!")
           //.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200))
           //.setBody(constant("{'Message': 'Hello world'}"));
