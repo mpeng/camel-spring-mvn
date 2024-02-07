@@ -30,6 +30,10 @@ DELETE  http://localhost:8080/api/tutorials/3
 To use PostgreSQL's TYPE feature:
 http://localhost:8080/api2/postgres
 
+
+Camel's restConfiguration() conflicts with Spring's @RestController regarding port
+If both are used, then they have to use different port.
+
 Endpoints for Camel Rest DSL
 ============================
 http://localhost:8082/api/users
